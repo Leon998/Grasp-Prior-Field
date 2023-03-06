@@ -18,6 +18,7 @@ if __name__ == "__main__":
 
     # Trajectory visualize, based on the fig and ax from pose_cluster
     files = os.listdir(path)
+    files.sort()  # Sort all the files in order
     all_TrajT_oh = np.zeros((1, 3))
     # Coloring
     rgb_all_TrajT_oh = np.zeros((1, 6))  # color the trajectory if is human-labeled

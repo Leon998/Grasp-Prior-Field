@@ -27,5 +27,4 @@ if __name__ == "__main__":
     # Trajectory
     pcd = o3d.io.read_point_cloud('./mocap/pcd_locations/mug_301_traj_label.xyzrgb')
 
-
     o3d.visualization.draw_geometries([coordinate, object_mesh, pcd, hand_handle, hand_side, hand_top])

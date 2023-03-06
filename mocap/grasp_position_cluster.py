@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    ## Grasp cluster
+    # Grasp cluster
     path = "./227_partial/jug/"
     q_grasps_oh, t_grasps_oh, tf_grasps_oh = grasp_integrate(path)
     fig, ax, label = position_cluster(t_grasps_oh, num_clusters=4)

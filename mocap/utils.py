@@ -123,7 +123,7 @@ def grasp_integrate(path):
     q_grasps_oh, t_grasps_oh, tf_grasps_oh : All the grasp poses Quaternion, Translation, and Transformation of each trial
     '''
     files = os.listdir(path)
-    files.sort()
+    files.sort()  # Sort all the files in order
     print(files)
     q_grasps_oh = np.zeros((1, 4))
     t_grasps_oh = np.zeros((1, 3))
