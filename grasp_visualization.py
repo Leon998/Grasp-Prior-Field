@@ -3,28 +3,39 @@ import copy
 import numpy as np
 from hand_config import *
 from object_config import *
+from mocap.utils import *
 
 
 if __name__ == "__main__":
+    grasp_types = mug.grasp_types
+    print(grasp_types)
+    # Reading pose
+    grasp_poses = np.loadtxt('mocap/pcd_gposes/mug_301_raw.txt')
+    # Reading grasp type name
+    human_label_path = 'mocap/pcd_gposes/mug_301_human_label.txt'
+    grasp_type_lib = grasp_type_index(human_label_path)
+
+    # Extract grasp types
+    gtype = 'top'
+    gtype_indices = grasp_type_lib[gtype]
+    gtype_poses = grasp_poses[gtype_indices]
+
+    # Coordinate
     coordinate = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.2, origin=[0, 0, 0])
     # Object
     object_mesh = mug.init_transform()
-
     # Hand
     init_hand = load_mano()
-    mug_grasps = np.loadtxt('./mocap/pcd_transforms/mug_301_raw.txt')
-    pose0 = mug_grasps[0]
-    pose1 = mug_grasps[36]
-    pose2 = mug_grasps[109]
 
-    hand_handle = hand_transform(pose0, init_hand)
-    hand_handle.paint_uniform_color([142/255, 207/255, 201/255])
-    hand_side = hand_transform(pose1, init_hand)
-    hand_side.paint_uniform_color([250/255, 127/255, 111/255])
-    hand_top = hand_transform(pose2, init_hand)
-    hand_top.paint_uniform_color([255/255, 190/255, 122/255])
+    meshes = [coordinate, object_mesh]
+    label = np.loadtxt('mocap/pcd_gposes/mug_'+str(gtype)+'_manifold.txt')
+    print(label)
+    for i in range(gtype_poses.shape[0]):
+        pose = gtype_poses[i]
+        hand_gtype = hand_transform(pose, init_hand)
+        hand_gtype.paint_uniform_color(colorlib[int(label[i])])
+        meshes.append(hand_gtype)
 
-    # Trajectory
-    pcd = o3d.io.read_point_cloud('./mocap/pcd_locations/mug_301_traj_label.xyzrgb')
-
-    o3d.visualization.draw_geometries([coordinate, object_mesh, pcd, hand_handle, hand_side, hand_top])
+    pcd = o3d.io.read_point_cloud('mocap/pcd_trajs/mug_'+str(gtype)+'_clustered.xyzrgb')
+    meshes.append(pcd)
+    o3d.visualization.draw_geometries(meshes)

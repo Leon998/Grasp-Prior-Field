@@ -4,7 +4,6 @@ from scipy.spatial.transform import Rotation as R
 import os
 from object_config import *
 
-
 """
 Q, T mean one trial's data stack up by time (frames)
 q, t mean an instant data in one trial
@@ -76,7 +75,8 @@ def coordinate_transform(q_wh, t_wh, q_wo, t_wo):
     # r_oh = (r_wh).dot(np.linalg.inv(r_wo))
     q_oh = R.from_matrix(r_oh).as_quat()
     # t_oh = t_wh + (-t_wo)  # This is right only when object is fixed, and human hand pivots
-    t_oh = np.linalg.inv(r_wo).dot(t_wh + (-t_wo))  # Guess, pivot the object is right? Note that r_wo should be inversed
+    t_oh = np.linalg.inv(r_wo).dot(
+        t_wh + (-t_wo))  # Guess, pivot the object is right? Note that r_wo should be inversed
     tf_oh = np.concatenate((q_oh, t_oh), axis=0)
     return q_oh, t_oh, tf_oh
 
@@ -209,7 +209,6 @@ def pose_cluster(tf_grasps_oh, num_clusters=5):
     ward = AgglomerativeClustering(n_clusters=num_clusters, linkage="ward").fit(tf_grasps_oh)
     label = ward.labels_
     print(f"Number of points: {label.size}")
-    print(label)
 
     import matplotlib.pyplot as plt
 
@@ -217,7 +216,6 @@ def pose_cluster(tf_grasps_oh, num_clusters=5):
     ax = fig.add_subplot(111, projection="3d")
     ax.set_position([0, 0, 0.95, 1])
     for l in np.unique(label):
-        print(l)
         ax.scatter(
             tf_grasps_oh[label == l, 4],
             tf_grasps_oh[label == l, 5],
@@ -228,5 +226,3 @@ def pose_cluster(tf_grasps_oh, num_clusters=5):
         )
     # plt.show()
     return fig, ax, label
-
-

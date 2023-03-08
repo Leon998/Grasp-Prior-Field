@@ -25,7 +25,7 @@ color5 = [147/255, 75/255, 67/255]
 color6 = [177/255, 206/255, 70/255]
 color7 = [99/255, 227/255, 152/255]
 color8 = [246/255, 202/255, 229/255]
-colors = [color0, color1, color2, color3, color4, color5, color6, color7, color8]
+colorlib = [color0, color1, color2, color3, color4, color5, color6, color7, color8]
 
 mug_model_path = './ycb_models/025_mug/textured.obj'
 mug_grasp_types = ['handle', 'side', 'top']
