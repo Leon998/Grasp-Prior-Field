@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 import os
+from object_config import *
 
 
 """
@@ -112,8 +113,8 @@ def sequence_coordinate_transform(Q_wh, T_wh, Q_wo, T_wo, num_frame):
     return Q_oh, T_oh, TF_oh
 
 
-def grasp_integrate(path):
-    '''
+def grasp_integrate(path, grasp_types):
+    """
     Stack all the grasp pose Transformation, Quaternion, Translation of each trial
     Parameters
     ----------
@@ -121,13 +122,14 @@ def grasp_integrate(path):
     Returns
     ----------
     q_grasps_oh, t_grasps_oh, tf_grasps_oh : All the grasp poses Quaternion, Translation, and Transformation of each trial
-    '''
+    """
     files = os.listdir(path)
     files.sort()  # Sort all the files in order
-    print(files)
+    # print(files)
     q_grasps_oh = np.zeros((1, 4))
     t_grasps_oh = np.zeros((1, 3))
     tf_grasps_oh = np.zeros((1, 7))
+    grasp_type_names = []
     for file in files:
         file_name = path + file
         Q_wh, T_wh, Q_wo, T_wo, _ = read_data(file_name)
@@ -136,11 +138,43 @@ def grasp_integrate(path):
         q_grasps_oh = np.concatenate((q_grasps_oh, q_oh.reshape(1, 4)), axis=0)
         t_grasps_oh = np.concatenate((t_grasps_oh, t_oh.reshape(1, 3)), axis=0)
         tf_grasps_oh = np.concatenate((tf_grasps_oh, tf_oh.reshape(1, 7)), axis=0)
+
+        for grasp_type in grasp_types:
+            if file[:-8] == grasp_type:
+                grasp_type_names.append(grasp_type)
+
     q_grasps_oh = q_grasps_oh[1:, :]  # q_grasps_oh contains quaternion
     t_grasps_oh = t_grasps_oh[1:, :]  # tf_grasps_oh contains translate
     tf_grasps_oh = tf_grasps_oh[1:, :]  # tf_grasps_oh contains all the hand transformations
     # w.r.t the object, including quaternion and translate
-    return q_grasps_oh, t_grasps_oh, tf_grasps_oh
+    return q_grasps_oh, t_grasps_oh, tf_grasps_oh, grasp_type_names
+
+
+def grasp_type_index(human_label_path):
+    """
+    Extract grasp types and return a dictionary, containing each type and file index respectively
+    Parameters
+    ----------
+    human_label_path
+
+    Returns
+    -------
+    grasp_type_lib: a dictionary containing each type and file index respectively
+    """
+    grasp_type_names = []
+    grasp_type_lib = {}
+    f = open(human_label_path, "r")
+    lines = f.readlines()
+    i = 0
+    for line in lines:
+        line = line.strip('\n')  # 删除\n
+        grasp_type_names.append(line)
+        if grasp_type_names.count(line) == 1:
+            grasp_type_lib[line] = [i]
+        else:
+            grasp_type_lib[line].append(i)
+        i += 1
+    return grasp_type_lib
 
 
 def position_cluster(t_grasps_oh, num_clusters=5):
@@ -149,7 +183,6 @@ def position_cluster(t_grasps_oh, num_clusters=5):
     ward = AgglomerativeClustering(n_clusters=num_clusters, linkage="ward").fit(t_grasps_oh)
     label = ward.labels_
     print(f"Number of points: {label.size}")
-    print(label)
 
     import matplotlib.pyplot as plt
 
