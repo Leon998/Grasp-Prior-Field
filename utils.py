@@ -177,6 +177,29 @@ def grasp_type_index(human_label_path):
     return grasp_type_lib
 
 
+def gtype_extract(gtype, gposes_path, gtypes_path):
+    """
+
+    Parameters
+    ----------
+    gtype: current grasp type
+    gposes_path: path to file containing all the raw grasp poses
+    gtypes_path: path to file of grasp type names
+
+    Returns
+    -------
+    gtype_indices: grasp type indices of current grasp type
+    gtype_poses: grasp pose of current grasp type
+    """
+    # Reading pose
+    grasp_poses = np.loadtxt(gposes_path)
+    # Reading grasp type name
+    grasp_type_lib = grasp_type_index(gtypes_path)
+    # Extract grasp types
+    gtype_indices = grasp_type_lib[gtype]
+    gtype_poses = grasp_poses[gtype_indices]
+    return gtype_indices, gtype_poses
+
 def position_cluster(t_grasps_oh, num_clusters=5):
     from sklearn.cluster import AgglomerativeClustering
 

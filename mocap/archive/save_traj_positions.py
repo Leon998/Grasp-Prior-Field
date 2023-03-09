@@ -14,7 +14,7 @@ def color_stack(color, num_frame):
 
 
 if __name__ == "__main__":
-    path = "./bowl/302/"
+    path = "../bowl/302/"
 
     # Trajectory visualize, based on the fig and ax from pose_cluster
     files = os.listdir(path)

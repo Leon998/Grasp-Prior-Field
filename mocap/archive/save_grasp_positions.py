@@ -15,7 +15,7 @@ if __name__ == "__main__":
     color1 = np.array([99 / 255, 227 / 255, 152 / 255]).reshape(1, 3)
     color2 = np.array([147 / 255, 148 / 255, 231 / 255]).reshape(1, 3)
     color3 = np.array([95 / 255, 151 / 255, 210 / 255]).reshape(1, 3)
-    path = "./bowl/302/"
+    path = "../bowl/302/"
     files = os.listdir(path)
     t_grasps_oh = np.zeros((len(files), 6))
     i = 0
