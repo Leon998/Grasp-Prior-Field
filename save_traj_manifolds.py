@@ -2,9 +2,8 @@
 Cluster grasp poses and save the corresponding trajectories
 """
 import numpy as np
-
 from utils import *
-from object_config import mug, colorlib
+from object_config import colorlib, mug, cracker_box
 from hand_config import *
 
 
@@ -17,18 +16,19 @@ def color_stack(color, num_frame):
 
 
 if __name__ == "__main__":
-    gtype = 'handle'
-    gposes_path = 'mocap/pcd_gposes/mug_gposes_raw.txt'
-    gtypes_path = 'mocap/pcd_gposes/mug_gtypes.txt'
+    object_cls = cracker_box
+    gtype = 'topShort'
+    gposes_path = 'mocap/pcd_gposes/' + object_cls.name + '_gposes_raw.txt'
+    gtypes_path = 'mocap/pcd_gposes/' + object_cls.name + '_gtypes.txt'
     gtype_indices, gtype_poses = gtype_extract(gtype, gposes_path, gtypes_path)
 
     # Clustering and saving labels
     fig, ax, label = pose_cluster(gtype_poses, num_clusters=4)
     print(label)
-    np.savetxt('mocap/pcd_gposes/mug_' + str(gtype) + '_label.txt', label, fmt="%i")
+    np.savetxt('mocap/pcd_gposes/' + object_cls.name + '_' + str(gtype) + '_label.txt', label, fmt="%i")
 
     # Saving trajectories
-    path = 'mocap/mug/'
+    path = 'mocap/' + object_cls.name + '/'
     files = os.listdir(path)
     files.sort()  # Sort all the files in order
     gtype_files = []
@@ -46,4 +46,4 @@ if __name__ == "__main__":
         gtype_Traj_T_oh_rgb = np.concatenate((gtype_Traj_T_oh_rgb, tmp), axis=0)
     gtype_Traj_T_oh_rgb = gtype_Traj_T_oh_rgb[1:, :]
     print(gtype_Traj_T_oh_rgb.shape)
-    np.savetxt('mocap/pcd_trajs/mug_' + str(gtype) +'_manifolds.xyzrgb', gtype_Traj_T_oh_rgb)
+    np.savetxt('mocap/pcd_trajs/' + object_cls.name + '_' + str(gtype) +'_manifolds.xyzrgb', gtype_Traj_T_oh_rgb)

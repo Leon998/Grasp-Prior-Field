@@ -3,7 +3,8 @@ import numpy as np
 
 
 class Object:
-    def __init__(self, file_path, init_pose, grasp_types):
+    def __init__(self, name, file_path, init_pose, grasp_types):
+        self.name = name
         self.file_path = file_path
         self.init_pose = init_pose
         self.grasp_types = grasp_types
@@ -29,10 +30,11 @@ colorlib = [color0, color1, color2, color3, color4, color5, color6, color7, colo
 
 mug_model_path = './ycb_models/025_mug/textured.obj'
 mug_grasp_types = ['handle', 'side', 'top']
-mug = Object(mug_model_path, (-np.pi / 2, 0, 0), mug_grasp_types)
+mug = Object('mug', mug_model_path, (-np.pi / 2, 0, 0), mug_grasp_types)
 
-# bowl_model_path = './ycb_models/024_bowl/textured.obj'
-# bowl_grasp_types
+cracker_box_model_path = './ycb_models/003_cracker_box/textured.obj'
+cracker_box_grasp_types = ['sideLong', 'sideShort', 'topLong', 'topShort']
+cracker_box = Object('cracker_box', cracker_box_model_path, (-np.pi / 2, 0, -np.pi / 2), cracker_box_grasp_types)
 
 
 if __name__ == "__main__":
