@@ -3,7 +3,7 @@ Cluster grasp poses and save the corresponding trajectories
 """
 import numpy as np
 from utils import *
-from object_config import colorlib, mug, cracker_box
+from object_config import colorlib, objects
 from hand_config import *
 
 
@@ -16,16 +16,20 @@ def color_stack(color, num_frame):
 
 
 if __name__ == "__main__":
-    object_cls = cracker_box
-    gtype = 'topShort'
-    gposes_path = 'mocap/pcd_gposes/' + object_cls.name + '_gposes_raw.txt'
-    gtypes_path = 'mocap/pcd_gposes/' + object_cls.name + '_gtypes.txt'
+    object_cls = objects['bowl']
+    gtype = 's1'
+    save_path = 'mocap/pcd_gposes/' + object_cls.name
+    if not os.path.exists(save_path):
+        os.mkdir(save_path)
+    gposes_path = save_path + '/' + 'gposes_raw.txt'
+    gtypes_path = save_path + '/' + 'gtypes.txt'
     gtype_indices, gtype_poses = gtype_extract(gtype, gposes_path, gtypes_path)
 
-    # Clustering and saving labels
-    fig, ax, label = pose_cluster(gtype_poses, num_clusters=4)
+    # Clustering and saving labels.
+    # fig, ax, label = pose_cluster(gtype_poses, num_clusters=4)
+    fig, ax, label = position_cluster(gtype_poses[:, 4:], num_clusters=4)
     print(label)
-    np.savetxt('mocap/pcd_gposes/' + object_cls.name + '_' + str(gtype) + '_label.txt', label, fmt="%i")
+    np.savetxt(save_path + '/' + str(gtype) + '_label.txt', label, fmt="%i")
 
     # Saving trajectories
     path = 'mocap/' + object_cls.name + '/'
@@ -44,6 +48,11 @@ if __name__ == "__main__":
         colors = color_stack(np.array(colorlib[int(label[i])]).reshape(1, 3), num_frame)
         tmp = np.concatenate((T_oh, colors), axis=1)
         gtype_Traj_T_oh_rgb = np.concatenate((gtype_Traj_T_oh_rgb, tmp), axis=0)
+        # if i >= 2:
+        #     break
     gtype_Traj_T_oh_rgb = gtype_Traj_T_oh_rgb[1:, :]
     print(gtype_Traj_T_oh_rgb.shape)
-    np.savetxt('mocap/pcd_trajs/' + object_cls.name + '_' + str(gtype) +'_manifolds.xyzrgb', gtype_Traj_T_oh_rgb)
+    save_path_traj = 'mocap/pcd_trajs/' + object_cls.name
+    if not os.path.exists(save_path_traj):
+        os.mkdir(save_path_traj)
+    np.savetxt(save_path_traj + '/' + str(gtype) +'_manifolds.xyzrgb', gtype_Traj_T_oh_rgb)

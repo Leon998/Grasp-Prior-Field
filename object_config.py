@@ -28,13 +28,23 @@ color7 = [99/255, 227/255, 152/255]
 color8 = [246/255, 202/255, 229/255]
 colorlib = [color0, color1, color2, color3, color4, color5, color6, color7, color8]
 
+objects = {}
+
 mug_model_path = './ycb_models/025_mug/textured.obj'
 mug_grasp_types = ['handle', 'side', 'top']
 mug = Object('mug', mug_model_path, (-np.pi / 2, 0, 0), mug_grasp_types)
+objects['mug'] = mug
 
 cracker_box_model_path = './ycb_models/003_cracker_box/textured.obj'
 cracker_box_grasp_types = ['sideLong', 'sideShort', 'topLong', 'topShort']
-cracker_box = Object('cracker_box', cracker_box_model_path, (-np.pi / 2, 0, -np.pi / 2), cracker_box_grasp_types)
+cracker_box = Object('cracker_box', cracker_box_model_path, (-np.pi / 2, 0, -np.pi / 2),
+                     cracker_box_grasp_types)
+objects['cracker_box'] = cracker_box
+
+bowl_model_path = './ycb_models/024_bowl/textured.obj'
+bowl_grasp_types = ['s1', 's2', 's3']
+bowl = Object('bowl', bowl_model_path, (-np.pi / 2, 0, 0), bowl_grasp_types)
+objects['bowl'] = bowl
 
 
 if __name__ == "__main__":
