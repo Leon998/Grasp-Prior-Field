@@ -58,6 +58,9 @@ def extract_grasp(Q_wh, T_wh, Q_wo, T_wo):
     return q_oh, t_oh, tf_oh
 
 
+def rotating_array_hand():
+    pass
+
 def coordinate_transform(q_wh, t_wh, q_wo, t_wo):
     """
     Transform world coordinate to object coordinate

@@ -16,8 +16,8 @@ def color_stack(color, num_frame):
 
 
 if __name__ == "__main__":
-    object_cls = objects['bowl']
-    gtype = 's1'
+    object_cls = objects['cracker_box']
+    gtype = 'sideShort'
     save_path = 'mocap/pcd_gposes/' + object_cls.name
     if not os.path.exists(save_path):
         os.mkdir(save_path)

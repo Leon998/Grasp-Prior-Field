@@ -1,11 +1,12 @@
 from hand_config import *
 from object_config import colorlib, objects
 from utils import *
+import open3d as o3d
 
 
 if __name__ == "__main__":
-    object_cls = objects['bowl']
-    gtype = 's1'
+    object_cls = objects['cracker_box']
+    gtype = 'sideShort'
     save_path = 'mocap/pcd_gposes/' + object_cls.name
     gposes_path = save_path + '/' + 'gposes_raw.txt'
     gtypes_path = save_path + '/' + 'gtypes.txt'
@@ -28,7 +29,8 @@ if __name__ == "__main__":
         # if i >= 2:
         #     break
 
-    save_path_traj = 'mocap/pcd_trajs/' + object_cls.name
-    pcd = o3d.io.read_point_cloud(save_path_traj + '/' + str(gtype) +'_manifolds.xyzrgb')
+    field_path = 'mocap/pcd_field/' + object_cls.name
+    # pcd = o3d.io.read_point_cloud(field_path + '/' + str(gtype) +'.xyzrgb')
+    pcd = o3d.io.read_point_cloud(field_path + '/' + 'field.xyz')
     meshes.append(pcd)
     o3d.visualization.draw_geometries(meshes)
