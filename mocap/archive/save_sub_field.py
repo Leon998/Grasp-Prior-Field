@@ -20,10 +20,10 @@ def save_sub_field(pcd, label, gtype):
 
 
 if __name__ == "__main__":
-    object_cls = objects['cracker_box']
-    field_path = 'mocap/pcd_field/' + object_cls.name
+    object_cls = objects['mug']
+    field_path = 'obj_coordinate/pcd_field/' + object_cls.name
 
-    field = np.loadtxt(field_path + '/' + 'field.txt')
+    field = np.loadtxt(field_path + '/' + 'position_field.txt')
     pcd = field[:, :3]
     label = field[:, -2:]
     print(pcd.shape)
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     # # Object
     # object_mesh = object_cls.init_transform()
     # meshes = [coordinate, object_mesh]
-    # gtype = 'topShort'
+    # gtype = 'handle'
     # pcd_1 = o3d.io.read_point_cloud(field_path + '/' + gtype + '.xyzrgb')
     # meshes.append(pcd_1)
     #

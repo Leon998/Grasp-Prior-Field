@@ -16,7 +16,7 @@ def label_stack(label, num_frame):
 
 
 if __name__ == "__main__":
-    object_cls = objects['cracker_box']
+    object_cls = objects['mug']
     Traj_T_oh = np.zeros((1, 5))
     for j, gtype in enumerate(object_cls.grasp_types):
         # j is the grasp type index

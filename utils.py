@@ -61,6 +61,7 @@ def extract_grasp(Q_wh, T_wh, Q_wo, T_wo):
 def rotating_array_hand():
     pass
 
+
 def coordinate_transform(q_wh, t_wh, q_wo, t_wo):
     """
     Transform world coordinate to object coordinate
@@ -134,9 +135,48 @@ def grasp_integrate(path, grasp_types):
     tf_grasps_oh = np.zeros((1, 7))
     grasp_type_names = []
     for file in files:
-        file_name = path + file
-        Q_wh, T_wh, Q_wo, T_wo, _ = read_data(file_name)
+        file_path = path + file
+        Q_wh, T_wh, Q_wo, T_wo, _ = read_data(file_path)
         q_oh, t_oh, tf_oh = extract_grasp(Q_wh, T_wh, Q_wo, T_wo)
+
+        q_grasps_oh = np.concatenate((q_grasps_oh, q_oh.reshape(1, 4)), axis=0)
+        t_grasps_oh = np.concatenate((t_grasps_oh, t_oh.reshape(1, 3)), axis=0)
+        tf_grasps_oh = np.concatenate((tf_grasps_oh, tf_oh.reshape(1, 7)), axis=0)
+
+        for grasp_type in grasp_types:
+            if file[:-8] == grasp_type:
+                grasp_type_names.append(grasp_type)
+
+    q_grasps_oh = q_grasps_oh[1:, :]  # q_grasps_oh contains quaternion
+    t_grasps_oh = t_grasps_oh[1:, :]  # tf_grasps_oh contains translate
+    tf_grasps_oh = tf_grasps_oh[1:, :]  # tf_grasps_oh contains all the hand transformations
+    # w.r.t the object, including quaternion and translate
+    return q_grasps_oh, t_grasps_oh, tf_grasps_oh, grasp_type_names
+
+
+def grasp_integrate_new(path, grasp_types):
+    """
+        Stack all the grasp pose Transformation, Quaternion, Translation of each trial
+        Parameters
+        ----------
+        path : file path of all tracking files (object coordinate)
+        Returns
+        ----------
+        q_grasps_oh, t_grasps_oh, tf_grasps_oh : All the grasp poses Quaternion, Translation, and Transformation of each trial
+        """
+    files = os.listdir(path)
+    files.sort()  # Sort all the files in order
+    # print(files)
+    q_grasps_oh = np.zeros((1, 4))
+    t_grasps_oh = np.zeros((1, 3))
+    tf_grasps_oh = np.zeros((1, 7))
+    grasp_type_names = []
+    for file in files:
+        file_path = path + file
+        hand_poses = np.loadtxt(file_path)
+        q_oh = hand_poses[-1, :4]
+        t_oh = hand_poses[-1, 4:]
+        tf_oh = hand_poses[-1, :]
 
         q_grasps_oh = np.concatenate((q_grasps_oh, q_oh.reshape(1, 4)), axis=0)
         t_grasps_oh = np.concatenate((t_grasps_oh, t_oh.reshape(1, 3)), axis=0)
@@ -202,6 +242,7 @@ def gtype_extract(gtype, gposes_path, gtypes_path):
     gtype_indices = grasp_type_lib[gtype]
     gtype_poses = grasp_poses[gtype_indices]
     return gtype_indices, gtype_poses
+
 
 def position_cluster(t_grasps_oh, num_clusters=5):
     from sklearn.cluster import AgglomerativeClustering

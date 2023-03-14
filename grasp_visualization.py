@@ -5,9 +5,9 @@ import open3d as o3d
 
 
 if __name__ == "__main__":
-    object_cls = objects['cracker_box']
-    gtype = 'sideShort'
-    save_path = 'mocap/pcd_gposes/' + object_cls.name
+    object_cls = objects['mug']
+    gtype = 'handle'
+    save_path = 'obj_coordinate/pcd_gposes/' + object_cls.name
     gposes_path = save_path + '/' + 'gposes_raw.txt'
     gtypes_path = save_path + '/' + 'gtypes.txt'
     gtype_indices, gtype_poses = gtype_extract(gtype, gposes_path, gtypes_path)
@@ -29,8 +29,8 @@ if __name__ == "__main__":
         # if i >= 2:
         #     break
 
-    field_path = 'mocap/pcd_field/' + object_cls.name
-    # pcd = o3d.io.read_point_cloud(field_path + '/' + str(gtype) +'.xyzrgb')
-    pcd = o3d.io.read_point_cloud(field_path + '/' + 'field.xyz')
+    field_path = 'obj_coordinate/pcd_field/' + object_cls.name
+    pcd = o3d.io.read_point_cloud(field_path + '/' + str(gtype) +'.xyzrgb')
+    # pcd = o3d.io.read_point_cloud(field_path + '/' + 'field.xyz')
     meshes.append(pcd)
     o3d.visualization.draw_geometries(meshes)

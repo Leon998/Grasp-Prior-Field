@@ -52,7 +52,7 @@ if __name__ == "__main__":
         #     break
     gtype_Traj_T_oh_rgb = gtype_Traj_T_oh_rgb[1:, :]
     print(gtype_Traj_T_oh_rgb.shape)
-    save_path_traj = 'mocap/pcd_trajs/' + object_cls.name
+    save_path_traj = 'mocap/pcd_trajs_labeled/' + object_cls.name
     if not os.path.exists(save_path_traj):
         os.mkdir(save_path_traj)
     np.savetxt(save_path_traj + '/' + str(gtype) +'_manifolds.xyzrgb', gtype_Traj_T_oh_rgb)
