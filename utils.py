@@ -58,10 +58,6 @@ def extract_grasp(Q_wh, T_wh, Q_wo, T_wo):
     return q_oh, t_oh, tf_oh
 
 
-def rotating_array_hand():
-    pass
-
-
 def coordinate_transform(q_wh, t_wh, q_wo, t_wo):
     """
     Transform world coordinate to object coordinate
@@ -117,7 +113,37 @@ def sequence_coordinate_transform(Q_wh, T_wh, Q_wo, T_wo, num_frame):
     return Q_oh, T_oh, TF_oh
 
 
-def grasp_integrate(path, grasp_types):
+def rotate_expansion(q_oh, t_oh, tf_oh):
+    r = R.from_euler('y', 180, degrees=True).as_matrix()
+    r_oh = R.from_quat(q_oh).as_matrix()
+    new_r_oh = r.dot(r_oh)
+    new_q_oh = R.from_matrix(new_r_oh).as_quat()
+    new_t_oh = -t_oh
+    new_t_oh[1] = -new_t_oh[1]
+    new_tf_oh = np.concatenate((new_q_oh, new_t_oh), axis=0)
+    return new_q_oh, new_t_oh, new_tf_oh
+
+
+def sequence_rotate_expansion(Q_oh, T_oh, TF_oh, num_frame):
+    new_Q_oh = np.zeros((1, 4))
+    new_T_oh = np.zeros((1, 3))
+    new_TF_oh = np.zeros((1, 7))
+    for i in range(num_frame):
+        q_oh = Q_oh[i, :]
+        t_oh = T_oh[i, :]
+        tf_oh = TF_oh[i, :]
+        new_q_oh, new_t_oh, new_tf_oh = rotate_expansion(q_oh, t_oh, tf_oh)
+        # Concatenate
+        new_Q_oh = np.concatenate((new_Q_oh, new_q_oh.reshape(1, 4)), axis=0)
+        new_T_oh = np.concatenate((new_T_oh, new_t_oh.reshape(1, 3)), axis=0)
+        new_TF_oh = np.concatenate((new_TF_oh, new_tf_oh.reshape(1, 7)), axis=0)
+    new_Q_oh = new_Q_oh[1:, :]
+    new_T_oh = new_T_oh[1:, :]
+    new_TF_oh = new_TF_oh[1:, :]
+    return new_Q_oh, new_T_oh, new_TF_oh
+
+
+def grasp_integrate_archive(path, grasp_types):
     """
     Stack all the grasp pose Transformation, Quaternion, Translation of each trial
     Parameters
@@ -154,7 +180,7 @@ def grasp_integrate(path, grasp_types):
     return q_grasps_oh, t_grasps_oh, tf_grasps_oh, grasp_type_names
 
 
-def grasp_integrate_new(path, grasp_types):
+def grasp_integrate(path, grasp_types):
     """
         Stack all the grasp pose Transformation, Quaternion, Translation of each trial
         Parameters

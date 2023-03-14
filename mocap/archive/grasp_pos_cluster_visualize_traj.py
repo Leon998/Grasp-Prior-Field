@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     ## Grasp cluster
     path = "../bottle/301/"
-    q_grasps_oh, t_grasps_oh, tf_grasps_oh = grasp_integrate(path)
+    q_grasps_oh, t_grasps_oh, tf_grasps_oh = grasp_integrate_archive(path, )
     fig, ax, label = position_cluster(t_grasps_oh, num_clusters=4)
     # fig, ax, label = pose_cluster(TF_grasp_oh, num_clusters=4)
 

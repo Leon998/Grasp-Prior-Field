@@ -5,8 +5,8 @@ import open3d as o3d
 
 
 if __name__ == "__main__":
-    object_cls = objects['mug']
-    gtype = 'handle'
+    object_cls = objects['bowl']
+    gtype = 's3'
     save_path = 'obj_coordinate/pcd_gposes/' + object_cls.name
     gposes_path = save_path + '/' + 'gposes_raw.txt'
     gtypes_path = save_path + '/' + 'gtypes.txt'

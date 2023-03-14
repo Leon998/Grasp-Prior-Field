@@ -9,7 +9,7 @@ from object_config import objects
 
 
 if __name__ == "__main__":
-    object_cls = objects['mug']
+    object_cls = objects['bowl']
     path = 'mocap/' + object_cls.name + '/'
     # Saving path
     save_path = 'obj_coordinate/' + object_cls.name
