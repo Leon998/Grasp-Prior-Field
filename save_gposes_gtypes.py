@@ -7,10 +7,7 @@ import numpy as np
 from object_config import objects
 
 if __name__ == "__main__":
-    object_cls = objects['bowl']
-    # path = 'mocap/' + object_cls.name + '/'
-    # q_grasps_oh, t_grasps_oh, tf_grasps_oh, grasp_type_names = grasp_integrate_archive(path, object_cls.grasp_types)
-    # save_path = 'mocap/pcd_gposes/' + object_cls.name
+    object_cls = objects['tomato_soup_can']
     path = 'obj_coordinate/' + object_cls.name + '/'
     q_grasps_oh, t_grasps_oh, tf_grasps_oh, grasp_type_names = grasp_integrate(path, object_cls.grasp_types)
     # Saving pose information

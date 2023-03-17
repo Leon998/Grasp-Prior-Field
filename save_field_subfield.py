@@ -31,7 +31,7 @@ def save_sub_field(pcd, label, gtype, field_path):
 
 
 if __name__ == "__main__":
-    object_cls = objects['bowl']
+    object_cls = objects['tomato_soup_can']
     Traj_T_oh = np.zeros((1, 5))
     for j, gtype in enumerate(object_cls.grasp_types):
         # j is the grasp type index

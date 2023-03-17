@@ -5,8 +5,8 @@ import open3d as o3d
 
 
 if __name__ == "__main__":
-    object_cls = objects['bowl']
-    gtype = 's3'
+    object_cls = objects['tomato_soup_can']
+    gtype = 'side'
     save_path = 'obj_coordinate/pcd_gposes/' + object_cls.name
     gposes_path = save_path + '/' + 'gposes_raw.txt'
     gtypes_path = save_path + '/' + 'gtypes.txt'
@@ -31,6 +31,6 @@ if __name__ == "__main__":
 
     field_path = 'obj_coordinate/pcd_field/' + object_cls.name
     pcd = o3d.io.read_point_cloud(field_path + '/' + str(gtype) +'.xyzrgb')
-    # pcd = o3d.io.read_point_cloud(field_path + '/' + 'field.xyz')
+    # pcd = o3d.io.read_point_cloud(field_path + '/' + 'field_position.xyz')
     meshes.append(pcd)
     o3d.visualization.draw_geometries(meshes)
