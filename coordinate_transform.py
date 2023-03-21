@@ -10,7 +10,7 @@ import shutil
 
 
 if __name__ == "__main__":
-    object_cls = objects['tomato_soup_can']
+    object_cls = objects['mug']
     path = 'mocap/' + object_cls.name + '/'
     # Saving path
     save_path = 'obj_coordinate/' + object_cls.name + '/'
@@ -29,31 +29,8 @@ if __name__ == "__main__":
         np.savetxt(save_path + file[:-3] + 'txt', TF_oh)
 
     # Rotate Expansion
-    if object_cls.rotate_expansion:
-        files = os.listdir(save_path)
-        files.sort()
-        gtype_log = {}
-        for file in files:
-            gtype = file[:-8]
-            gtype_log[gtype] = file[-7:-4]
-        print(gtype_log)
-        for i, file in enumerate(files):
-            gtype = file[:-8]
-            index = int(file[-7:-4])  # current index
-            file_path = save_path + file
-            origin_pose = np.loadtxt(file_path)
-            # # ================================ Trajectory test =============================== #
-            Q_oh = origin_pose[:, :4]
-            T_oh = origin_pose[:, 4:]
-            TF_oh = origin_pose[:, :]
-            num_frame = origin_pose.shape[0]
-            new_Q_oh, new_T_oh, new_TF_oh = sequence_rotate_expansion(Q_oh, T_oh, TF_oh, num_frame)
-            new_index = int(gtype_log[gtype]) + index + 1
-            if new_index <= 9:
-                zeros = '00'
-            elif new_index <= 99:
-                zeros = '0'
-            else:
-                zeros = ''
-            print(str(gtype) + '_' + zeros + str(new_index) + '.txt')
-            np.savetxt(save_path + str(gtype) + '_' +zeros + str(new_index) + '.txt', new_TF_oh)
+    if object_cls.rotate_expansion == 180:
+        save_rotate_expansion(save_path, degree=180)
+    elif object_cls.rotate_expansion == 90:
+        save_rotate_expansion(save_path, degree=90)
+        save_rotate_expansion(save_path, degree=180)

@@ -7,7 +7,7 @@ import numpy as np
 from object_config import objects
 
 if __name__ == "__main__":
-    object_cls = objects['tomato_soup_can']
+    object_cls = objects['mug']
     path = 'obj_coordinate/' + object_cls.name + '/'
     q_grasps_oh, t_grasps_oh, tf_grasps_oh, grasp_type_names = grasp_integrate(path, object_cls.grasp_types)
     # Saving pose information
@@ -15,7 +15,7 @@ if __name__ == "__main__":
     if not os.path.exists(save_path):
         os.mkdir(save_path)
     np.savetxt(save_path + '/' + 'gposes_raw.txt', tf_grasps_oh)
-    # Saving grasp type index
+    # Saving grasp type index_list
     with open(save_path + '/' + 'gtypes.txt', 'w') as f:
         for gtype in grasp_type_names:
             f.write(gtype + '\n')

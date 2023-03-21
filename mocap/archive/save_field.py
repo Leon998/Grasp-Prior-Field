@@ -19,7 +19,7 @@ if __name__ == "__main__":
     object_cls = objects['mug']
     Traj_T_oh = np.zeros((1, 5))
     for j, gtype in enumerate(object_cls.grasp_types):
-        # j is the grasp type index
+        # j is the grasp type index_list
         save_path = 'mocap/pcd_gposes/' + object_cls.name
         if not os.path.exists(save_path):
             os.mkdir(save_path)
@@ -51,8 +51,8 @@ if __name__ == "__main__":
             Traj_T_oh = np.concatenate((Traj_T_oh, tmp), axis=0)
     # End of all trajectory points, all of them are stacked together
     Traj_T_oh = Traj_T_oh[1:, :]
-    # print(Traj_T_oh)
-    # print(Traj_T_oh.shape)
+    # print(Traj_TF_oh_labeled)
+    # print(Traj_TF_oh_labeled.shape)
     save_path_field = 'mocap/pcd_field/' + object_cls.name
     if not os.path.exists(save_path_field):
         os.mkdir(save_path_field)
