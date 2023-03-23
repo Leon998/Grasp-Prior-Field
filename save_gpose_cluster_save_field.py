@@ -32,12 +32,22 @@ def save_sub_field(pcd, label, gtype, field_path):
 
 
 if __name__ == "__main__":
-    object_cls = objects['mug']
-    Traj_TF_oh_labeled = np.zeros((1, 9))
-    gposes_labeled = np.zeros((1, 2))
+    object_cls = objects['power_drill']
+    # ====================================== Save gposes gtypes ============================== #
+    path = 'obj_coordinate/' + object_cls.name + '/'
+    q_grasps_oh, t_grasps_oh, tf_grasps_oh, grasp_type_names = grasp_integrate(path, object_cls.grasp_types)
+    # Saving pose information
     save_path = 'obj_coordinate/pcd_gposes/' + object_cls.name
     if not os.path.exists(save_path):
         os.mkdir(save_path)
+    np.savetxt(save_path + '/' + 'gposes_raw.txt', tf_grasps_oh)
+    # Saving grasp type index_list
+    with open(save_path + '/' + 'gtypes.txt', 'w') as f:
+        for gtype in grasp_type_names:
+            f.write(gtype + '\n')
+    # ======================================================================================= #
+    Traj_TF_oh_labeled = np.zeros((1, 9))
+    gposes_labeled = np.zeros((1, 2))
     gposes_path = save_path + '/' + 'gposes_raw.txt'
     gtypes_path = save_path + '/' + 'gtypes.txt'
     for j, gtype in enumerate(object_cls.grasp_types):
@@ -45,7 +55,7 @@ if __name__ == "__main__":
         gtype_indices, gtype_poses = gtype_extract(gtype, gposes_path, gtypes_path)
         # print(gtype_indices)
 
-        # Clustering and saving labels.
+        # ========================== Clustering and saving labels ========================== #
         # fig, ax, label = pose_cluster(gtype_poses, num_clusters=4)
         fig, ax, label = position_cluster(gtype_poses[:, 4:], num_clusters=4)
         print('label: ', label)
@@ -98,7 +108,7 @@ if __name__ == "__main__":
     for point in Traj_TF_oh_labeled:
         position = point[4:7]
         label = point[7:]
-        color_idx = int(label[0] * 4 + label[1])
+        color_idx = int(label[0] * 4 + label[1])  # 4-number system transform
         color = np.array(colorlib[color_idx])
         t_oh_colored = np.concatenate((position.reshape((1,3)), color.reshape((1,3))), axis=1)
         Traj_T_oh_colored = np.concatenate((Traj_T_oh_colored, t_oh_colored), axis=0)

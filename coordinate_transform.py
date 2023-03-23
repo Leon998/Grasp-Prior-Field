@@ -10,7 +10,7 @@ import shutil
 
 
 if __name__ == "__main__":
-    object_cls = objects['mug']
+    object_cls = objects['power_drill']
     path = 'mocap/' + object_cls.name + '/'
     # Saving path
     save_path = 'obj_coordinate/' + object_cls.name + '/'
@@ -26,7 +26,13 @@ if __name__ == "__main__":
         file_path = path + file
         Q_wh, T_wh, Q_wo, T_wo, num_frame = read_data(file_path)
         Q_oh, T_oh, TF_oh = sequence_coordinate_transform(Q_wh, T_wh, Q_wo, T_wo, num_frame)
-        np.savetxt(save_path + file[:-3] + 'txt', TF_oh)
+        # If cutting is needed
+        length = TF_oh.shape[0]
+        cutted_start = int(0.8 * length)
+        cutted_end = int(0.2 * length)
+        gpose = TF_oh[-1, :].reshape(1, 7)
+        cutted_TF_oh = np.concatenate((TF_oh[-cutted_start:-cutted_end, :], gpose), axis=0)
+        np.savetxt(save_path + file[:-3] + 'txt', cutted_TF_oh)
 
     # Rotate Expansion
     if object_cls.rotate_expansion == 180:

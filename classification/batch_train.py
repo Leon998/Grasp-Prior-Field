@@ -5,36 +5,16 @@ from torch.utils.data import DataLoader
 import numpy as np
 from dataset_config import *
 
-torch.manual_seed(1)    # reproducible
-
-path = '../obj_coordinate/pcd_field/mug/field_position.txt'
-batch_size = 64
-epochs = 50
-# Get cpu or gpu device for training.
-device = "cuda"
-print(f"Using {device} device")
 
 
-train_dataloader, test_dataloader = data_loading(path, batch_size)
 
-for X, y in train_dataloader:
-    print(f"Shape of X [N, C, H, W]: {X.shape}")
-    print(f"Shape of y: {y.shape} {y.dtype}")
-    break
-
-
-model = torch.nn.Sequential(
-    torch.nn.Linear(3, 10),
+MLP = torch.nn.Sequential(
+    torch.nn.Linear(7, 32),
     torch.nn.ReLU(),
-    torch.nn.Linear(10, 32),
+    torch.nn.Linear(32, 64),
     torch.nn.ReLU(),
-    torch.nn.Linear(32, 12)
+    torch.nn.Linear(64, 8)
 )
-model = model.to(device)
-print(model)
-
-loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.03)
 
 
 def train(dataloader, model, loss_fn, optimizer):
@@ -57,7 +37,7 @@ def train(dataloader, model, loss_fn, optimizer):
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
 
-def test(dataloader, model, loss_fn):
+def t_test(dataloader, model, loss_fn):
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
     model.eval()
@@ -72,9 +52,32 @@ def test(dataloader, model, loss_fn):
     correct /= size
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
+if __name__ == "__main__":
+    torch.manual_seed(1)  # reproducible
 
-for t in range(epochs):
-    print(f"Epoch {t+1}\n-------------------------------")
-    train(train_dataloader, model, loss_fn, optimizer)
-    test(test_dataloader, model, loss_fn)
-print("Done!")
+    path = '../obj_coordinate/pcd_field/power_drill/TF_field.txt'
+    batch_size = 64
+    epochs = 50
+    # Get cpu or gpu device for training.
+    device = "cuda"
+    print(f"Using {device} device")
+
+    _, _, train_dataloader, test_dataloader = data_loading(path, batch_size)
+
+    for X, y in train_dataloader:
+        print(f"Shape of X [N, C, H, W]: {X.shape}")
+        print(f"Shape of y: {y.shape} {y.dtype}")
+        break
+
+    model = MLP.to(device)
+    loss_fn = nn.CrossEntropyLoss()
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.03)
+
+    for t in range(epochs):
+        print(f"Epoch {t+1}\n-------------------------------")
+        train(train_dataloader, model, loss_fn, optimizer)
+        t_test(test_dataloader, model, loss_fn)
+    print("Done!")
+    # Save model
+    # torch.save(model.state_dict(), "model.pth")
+    torch.save(model, 'model.pkl')
