@@ -4,20 +4,19 @@ from torch import nn
 from torch.utils.data import DataLoader
 import numpy as np
 from dataset_config import *
-from batch_train import MLP
 from object_config import objects
 from hand_config import *
 import open3d as o3d
 
 
 if __name__ == "__main__":
-    object_cls = objects['power_drill']
+    object_cls = objects['mug']
     path = '../obj_coordinate/pcd_field/' + object_cls.name + '/TF_field.txt'
     batch_size = 64
     # Get cpu or gpu device for training.
     device = "cuda"
 
-    train_set, validate_set, _, _ = data_loading(path, batch_size)
+    train_set, validate_set, _, _ = data_loading(path, batch_size, object_cls)
     num_example = 1
     X, Y = validate_set[:num_example][0], validate_set[:num_example][1]
     X, Y = X.to(device), Y.to(device)

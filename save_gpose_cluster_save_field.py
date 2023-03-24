@@ -32,7 +32,7 @@ def save_sub_field(pcd, label, gtype, field_path):
 
 
 if __name__ == "__main__":
-    object_cls = objects['power_drill']
+    object_cls = objects['mug']
     # ====================================== Save gposes gtypes ============================== #
     path = 'obj_coordinate/' + object_cls.name + '/'
     q_grasps_oh, t_grasps_oh, tf_grasps_oh, grasp_type_names = grasp_integrate(path, object_cls.grasp_types)
@@ -57,14 +57,16 @@ if __name__ == "__main__":
 
         # ========================== Clustering and saving labels ========================== #
         # fig, ax, label = pose_cluster(gtype_poses, num_clusters=4)
-        fig, ax, label = position_cluster(gtype_poses[:, 4:], num_clusters=4)
+        fig, ax, label = position_cluster(gtype_poses[:, 4:], num_clusters=object_cls.g_clusters)
         print('label: ', label)
         np.savetxt(save_path + '/' + str(gtype) + '_label.txt', label, fmt="%i")
+        # ============= If dynamic clusters is needed, change here ======================== #
         for idx in range(len(label)):
             gtype = np.array(j).reshape(1, 1)
             glabel = np.array(label[idx]).reshape(1, 1)
             tmp = np.concatenate((gtype, glabel), axis=1)
             gposes_labeled = np.concatenate((gposes_labeled, tmp), axis=0)
+        # ================================================================================= #
 
         # Saving trajectories
         path = 'obj_coordinate/' + object_cls.name + '/'
@@ -83,7 +85,9 @@ if __name__ == "__main__":
             T_oh = hand_poses[:, 4:]
             TF_oh = hand_poses[:, :]
             num_frame = hand_poses.shape[0]
+            # ============= If dynamic clusters is needed, change here ======================== #
             labels = label_stack(np.array([j, label[i]]).reshape(1, 2), num_frame)
+            # ================================================================================= #
             tmp = np.concatenate((TF_oh, labels), axis=1)
             TF_oh = np.concatenate((TF_oh, labels), axis=1)
             np.savetxt(traj_path + '/' + file[:-3] + 'txt', TF_oh)
@@ -108,7 +112,7 @@ if __name__ == "__main__":
     for point in Traj_TF_oh_labeled:
         position = point[4:7]
         label = point[7:]
-        color_idx = int(label[0] * 4 + label[1])  # 4-number system transform
+        color_idx = int(label[0] * object_cls.g_clusters + label[1])  # 4-number system transform
         color = np.array(colorlib[color_idx])
         t_oh_colored = np.concatenate((position.reshape((1,3)), color.reshape((1,3))), axis=1)
         Traj_T_oh_colored = np.concatenate((Traj_T_oh_colored, t_oh_colored), axis=0)

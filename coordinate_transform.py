@@ -10,7 +10,7 @@ import shutil
 
 
 if __name__ == "__main__":
-    object_cls = objects['power_drill']
+    object_cls = objects['mug']
     path = 'mocap/' + object_cls.name + '/'
     # Saving path
     save_path = 'obj_coordinate/' + object_cls.name + '/'

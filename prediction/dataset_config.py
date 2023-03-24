@@ -4,7 +4,7 @@ import torch.utils.data as Data
 from torch.utils.data import DataLoader
 
 
-def data_loading(path, batch_size=64):
+def data_loading(path, batch_size=64, object_cls=None):
     # Loading and forming data
     file = np.loadtxt(path)
     print(file.shape)
@@ -12,7 +12,7 @@ def data_loading(path, batch_size=64):
     train_size = int(0.8*length)
     validate_size = length - train_size
     X = torch.from_numpy(file[:, :7]).type(torch.FloatTensor)
-    Y = file[:, 7] * 4 + file[:, 8]  # 4-number system transform
+    Y = file[:, 7] * object_cls.g_clusters + file[:, 8]  # 4-number system transform
     Y = torch.from_numpy(Y).type(torch.LongTensor)
     Y = Y.reshape(Y.shape[0])
     print(X.shape, Y.shape, length)

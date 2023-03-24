@@ -8,13 +8,13 @@ class Object:
                  file_path: object,
                  init_pose: object,
                  grasp_types: object,
-                 gtype_clusters,
+                 g_clusters=4,
                  rotate_expansion: object = 0):
         self.name = name
         self.file_path = file_path
         self.init_pose = init_pose
         self.grasp_types = grasp_types
-        self.gtype_clusters = gtype_clusters
+        self.g_clusters = g_clusters
         self.rotate_expansion = rotate_expansion
         # self.color_label = color_label
 
@@ -128,21 +128,22 @@ objects['bleach_cleanser'] = bleach_cleanser
 bowl = Object(name='bowl',
               file_path=PATH+'ycb_models/024_bowl/textured.obj',
               init_pose=(-np.pi / 2, 0, 0),
-              grasp_types=['side', 'far', 'near'],
+              grasp_types=['near', 'side'],
               rotate_expansion=90)
 objects['bowl'] = bowl
 
 mug = Object(name='mug',
              file_path=PATH+'ycb_models/025_mug/textured.obj',
              init_pose=(-np.pi / 2, 0, 0),
-             grasp_types=['handle', 'side', 'top'])
+             grasp_types=['handle', 'side', 'top'],
+             g_clusters=4)
 objects['mug'] = mug
 
 power_drill = Object(name='power_drill',
                      file_path=PATH+'ycb_models/035_power_drill/textured.obj',
                      init_pose=(0, 0, 0),
                      grasp_types=['handle', 'head'],
-                     gtype_clusters=[6, 6])
+                     g_clusters=6)
 objects['power_drill'] = power_drill
 
 wood_block = Object(name='wood_block',
@@ -155,31 +156,31 @@ objects['wood_block'] = wood_block
 scissors = Object(name='scissors',
                   file_path=PATH+'ycb_models/037_scissors/textured.obj',
                   init_pose=(-np.pi / 2, 0, np.pi * 0.57),
-                  grasp_types=['handle', 'middle', 'head'])
+                  grasp_types=['handle', 'head', 'middle'])
 objects['scissors'] = scissors
 
 large_marker = Object(name='large_marker',
                       file_path=PATH+'ycb_models/040_large_marker/textured.obj',
                       init_pose=(-np.pi / 2, 0, -np.pi / 2),
-                      grasp_types=['handle', 'middle', 'head'])
+                      grasp_types=['handle', 'head', 'middle'])
 objects['large_marker'] = large_marker
 
 large_clamp = Object(name='large_clamp',
                      file_path=PATH+'ycb_models/051_large_clamp/textured.obj',
                      init_pose=(-np.pi / 2, 0, -np.pi * 0.53),
-                     grasp_types=['handle', 'middle', 'head'])
+                     grasp_types=['handle', 'head', 'middle'])
 objects['large_clamp'] = large_clamp
 
 extra_large_clamp = Object(name='extra_large_clamp',
                            file_path=PATH+'ycb_models/052_extra_large_clamp/textured.obj',
                            init_pose=(-np.pi / 2, 0, 0),
-                           grasp_types=['handle', 'middle', 'head'])
+                           grasp_types=['handle', 'head', 'middle'])
 objects['extra_large_clamp'] = extra_large_clamp
 
 foam_brick = Object(name='foam_brick',
                     file_path=PATH+'ycb_models/061_foam_brick/textured.obj',
                     init_pose=(0, np.pi / 2, 0),
-                    grasp_types=['handle', 'middle', 'head'],
+                    grasp_types=['side', 'top'],
                     rotate_expansion=180)
 objects['foam_brick'] = foam_brick
 

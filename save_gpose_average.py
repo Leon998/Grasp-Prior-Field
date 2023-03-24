@@ -17,7 +17,7 @@ def save_gpose_avg(object_cls, dubug=False):
     gpose_label = np.loadtxt(gpose_label_path)
     label = []  # 4-number system transform
     for l in gpose_label:
-        tmp = int(l[0] * 4 + l[1])
+        tmp = int(l[0] * object_cls.g_clusters + l[1])
         label.append(tmp)
     item = np.unique(np.array(label))  # unique gtype number, [0, 1, 2, ..., 11]
     index_list = np.arange(len(label))  # index list, the index of files [0, 1, 2, ...,299]

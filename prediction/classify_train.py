@@ -4,16 +4,19 @@ from torch import nn
 from torch.utils.data import DataLoader
 import numpy as np
 from dataset_config import *
+from object_config import objects
 
 
 
+object_cls = objects['mug']
+output_dim = object_cls.g_clusters * len(object_cls.grasp_types)
 
 MLP = torch.nn.Sequential(
     torch.nn.Linear(7, 32),
     torch.nn.ReLU(),
     torch.nn.Linear(32, 64),
     torch.nn.ReLU(),
-    torch.nn.Linear(64, 8)
+    torch.nn.Linear(64, output_dim)
 )
 
 
@@ -55,14 +58,14 @@ def t_test(dataloader, model, loss_fn):
 if __name__ == "__main__":
     torch.manual_seed(1)  # reproducible
 
-    path = '../obj_coordinate/pcd_field/power_drill/TF_field.txt'
+    path = '../obj_coordinate/pcd_field/' + object_cls.name + '/TF_field.txt'
     batch_size = 64
     epochs = 50
     # Get cpu or gpu device for training.
     device = "cuda"
     print(f"Using {device} device")
 
-    _, _, train_dataloader, test_dataloader = data_loading(path, batch_size)
+    _, _, train_dataloader, test_dataloader = data_loading(path, batch_size, object_cls)
 
     for X, y in train_dataloader:
         print(f"Shape of X [N, C, H, W]: {X.shape}")
