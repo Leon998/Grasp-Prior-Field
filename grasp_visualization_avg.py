@@ -7,7 +7,7 @@ import open3d as o3d
 
 
 if __name__ == "__main__":
-    object_cls = objects['mug']
+    object_cls = objects['cracker_box']
     save_path = 'obj_coordinate/pcd_gposes/' + object_cls.name
     gposes_avg_path = save_path + '/' + 'gposes_label_avg.txt'
     field_path = 'obj_coordinate/pcd_field/' + object_cls.name

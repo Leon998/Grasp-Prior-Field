@@ -6,9 +6,7 @@ import numpy as np
 from dataset_config import *
 from object_config import objects
 
-
-
-object_cls = objects['mug']
+object_cls = objects['cracker_box']
 output_dim = object_cls.g_clusters * len(object_cls.grasp_types)
 
 MLP = torch.nn.Sequential(
@@ -53,12 +51,13 @@ def t_test(dataloader, model, loss_fn):
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
     test_loss /= num_batches
     correct /= size
-    print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+    print(f"Test Error: \n Accuracy: {(100 * correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+
 
 if __name__ == "__main__":
     torch.manual_seed(1)  # reproducible
 
-    path = '../obj_coordinate/pcd_field/' + object_cls.name + '/TF_field.txt'
+    path = 'classify/training_data/' + object_cls.name + '_field.txt'
     batch_size = 64
     epochs = 50
     # Get cpu or gpu device for training.
@@ -77,10 +76,10 @@ if __name__ == "__main__":
     optimizer = torch.optim.SGD(model.parameters(), lr=0.03)
 
     for t in range(epochs):
-        print(f"Epoch {t+1}\n-------------------------------")
+        print(f"Epoch {t + 1}\n-------------------------------")
         train(train_dataloader, model, loss_fn, optimizer)
         t_test(test_dataloader, model, loss_fn)
     print("Done!")
     # Save model
     # torch.save(model.state_dict(), "model.pth")
-    torch.save(model, 'model.pkl')
+    torch.save(model, 'classify/trained_models/' + object_cls.name + '.pkl')

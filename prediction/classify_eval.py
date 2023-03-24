@@ -10,8 +10,8 @@ import open3d as o3d
 
 
 if __name__ == "__main__":
-    object_cls = objects['mug']
-    path = '../obj_coordinate/pcd_field/' + object_cls.name + '/TF_field.txt'
+    object_cls = objects['cracker_box']
+    path = 'classify/training_data/' + object_cls.name + '_field.txt'
     batch_size = 64
     # Get cpu or gpu device for training.
     device = "cuda"
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     X, Y = validate_set[:num_example][0], validate_set[:num_example][1]
     X, Y = X.to(device), Y.to(device)
 
-    model = torch.load("model.pkl")
+    model = torch.load('classify/trained_models/' + object_cls.name + '.pkl')
     model.eval()
     Pred = []
     with torch.no_grad():

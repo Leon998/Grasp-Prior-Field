@@ -32,7 +32,7 @@ def save_sub_field(pcd, label, gtype, field_path):
 
 
 if __name__ == "__main__":
-    object_cls = objects['mug']
+    object_cls = objects['cracker_box']
     # ====================================== Save gposes gtypes ============================== #
     path = 'obj_coordinate/' + object_cls.name + '/'
     q_grasps_oh, t_grasps_oh, tf_grasps_oh, grasp_type_names = grasp_integrate(path, object_cls.grasp_types)
@@ -56,8 +56,8 @@ if __name__ == "__main__":
         # print(gtype_indices)
 
         # ========================== Clustering and saving labels ========================== #
-        # fig, ax, label = pose_cluster(gtype_poses, num_clusters=4)
-        fig, ax, label = position_cluster(gtype_poses[:, 4:], num_clusters=object_cls.g_clusters)
+        fig, ax, label = pose_cluster(gtype_poses, num_clusters=object_cls.g_clusters)
+        # fig, ax, label = position_cluster(gtype_poses[:, 4:], num_clusters=object_cls.g_clusters)
         print('label: ', label)
         np.savetxt(save_path + '/' + str(gtype) + '_label.txt', label, fmt="%i")
         # ============= If dynamic clusters is needed, change here ======================== #
@@ -101,12 +101,11 @@ if __name__ == "__main__":
     save_gpose_avg(object_cls)
     # ======================================= Save TF_field ======================================== #
     Traj_TF_oh_labeled = Traj_TF_oh_labeled[1:, :]
-    # print(Traj_TF_oh_labeled)
-    # print(Traj_TF_oh_labeled.shape)
     field_path = 'obj_coordinate/pcd_field/' + object_cls.name
     if not os.path.exists(field_path):
         os.mkdir(field_path)
     np.savetxt(field_path + '/' + 'TF_field.txt', Traj_TF_oh_labeled)
+    np.savetxt('prediction/classify/training_data/' + object_cls.name + '_field.txt', Traj_TF_oh_labeled)
     # ====================================== Save T_colored ====================================== #
     Traj_T_oh_colored = np.zeros((1, 6))
     for point in Traj_TF_oh_labeled:

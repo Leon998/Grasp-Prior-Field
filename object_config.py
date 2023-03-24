@@ -68,6 +68,7 @@ tomato_soup_can = Object(name='tomato_soup_can',
                          file_path=PATH+'ycb_models/005_tomato_soup_can/textured.obj',
                          init_pose=(-np.pi / 2, 0, -np.pi / 2),
                          grasp_types=['side', 'top'],
+                         g_clusters=6,
                          rotate_expansion=90)
 objects['tomato_soup_can'] = tomato_soup_can
 
@@ -75,6 +76,7 @@ mustard_bottle = Object(name='mustard_bottle',
                         file_path=PATH+'ycb_models/006_mustard_bottle/textured.obj',
                         init_pose=(-np.pi / 2, 0, -np.pi / 3),
                         grasp_types=['side1', 'side2', 'top'],
+                        g_clusters=4,
                         rotate_expansion=180)
 objects['mustard_bottle'] = mustard_bottle
 
@@ -121,7 +123,7 @@ objects['pitcher_base'] = pitcher_base
 bleach_cleanser = Object(name='bleach_cleanser',
                          file_path=PATH+'ycb_models/021_bleach_cleanser/textured.obj',
                          init_pose=(-np.pi / 2, 0, np.pi / 2),
-                         grasp_types=['handle', 'side', 'top'],
+                         grasp_types=['side', 'top', 'wide'],
                          rotate_expansion=180)
 objects['bleach_cleanser'] = bleach_cleanser
 
@@ -156,7 +158,7 @@ objects['wood_block'] = wood_block
 scissors = Object(name='scissors',
                   file_path=PATH+'ycb_models/037_scissors/textured.obj',
                   init_pose=(-np.pi / 2, 0, np.pi * 0.57),
-                  grasp_types=['handle', 'head', 'middle'])
+                  grasp_types=['handle', 'head'])
 objects['scissors'] = scissors
 
 large_marker = Object(name='large_marker',
@@ -168,13 +170,13 @@ objects['large_marker'] = large_marker
 large_clamp = Object(name='large_clamp',
                      file_path=PATH+'ycb_models/051_large_clamp/textured.obj',
                      init_pose=(-np.pi / 2, 0, -np.pi * 0.53),
-                     grasp_types=['handle', 'head', 'middle'])
+                     grasp_types=['handle', 'head'])
 objects['large_clamp'] = large_clamp
 
 extra_large_clamp = Object(name='extra_large_clamp',
                            file_path=PATH+'ycb_models/052_extra_large_clamp/textured.obj',
                            init_pose=(-np.pi / 2, 0, 0),
-                           grasp_types=['handle', 'head', 'middle'])
+                           grasp_types=['handle', 'head'])
 objects['extra_large_clamp'] = extra_large_clamp
 
 foam_brick = Object(name='foam_brick',
