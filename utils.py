@@ -325,7 +325,7 @@ def position_cluster(t_grasps_oh, num_clusters=5):
     return fig, ax, label
 
 
-def pose_cluster(tf_grasps_oh, num_clusters=5):
+def pose_cluster(tf_grasps_oh, num_clusters=4):
     from sklearn.cluster import AgglomerativeClustering
 
     ward = AgglomerativeClustering(n_clusters=num_clusters, linkage="ward").fit(tf_grasps_oh)

@@ -6,15 +6,15 @@ import numpy as np
 from dataset_config import *
 from object_config import objects
 
-object_cls = objects['cracker_box']
+object_cls = objects['mug']
 output_dim = object_cls.g_clusters * len(object_cls.grasp_types)
 
 MLP = torch.nn.Sequential(
-    torch.nn.Linear(7, 32),
+    torch.nn.Linear(7, 64),
     torch.nn.ReLU(),
-    torch.nn.Linear(32, 64),
+    torch.nn.Linear(64, 128),
     torch.nn.ReLU(),
-    torch.nn.Linear(64, output_dim)
+    torch.nn.Linear(128, output_dim)
 )
 
 
