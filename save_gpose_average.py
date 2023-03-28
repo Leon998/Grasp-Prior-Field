@@ -15,15 +15,15 @@ def save_gpose_avg(object_cls, dubug=False):
     gpose_label_path = save_path + '/' + 'gposes_label.txt'
     gposes_raw = np.loadtxt(gposes_path)
     gpose_label = np.loadtxt(gpose_label_path)
-    label = []  # 4-number system transform
-    for l in gpose_label:
-        tmp = int(l[0] * object_cls.g_clusters + l[1])
-        label.append(tmp)
-    item = np.unique(np.array(label))  # unique gtype number, [0, 1, 2, ..., 11]
-    index_list = np.arange(len(label))  # index list, the index of files [0, 1, 2, ...,299]
+    # label = []  # 4-number system transform
+    # for l in gpose_label:
+    #     tmp = int(l[0] * object_cls.g_clusters + l[1])
+    #     label.append(tmp)
+    item = np.unique(gpose_label)  # unique gtype number, [0, 1, 2, ..., 11]
+    index_list = np.arange(len(gpose_label))  # index list, the index of files [0, 1, 2, ...,299]
     gpose_avg = []
     for i, g in enumerate(item):
-        g_index = index_list[label == g]
+        g_index = index_list[gpose_label == g]
         gposes = gposes_raw[g_index]
         g_avg = rotation_avg(gposes)
         if dubug:

@@ -10,7 +10,7 @@ import shutil
 
 
 if __name__ == "__main__":
-    object_cls = objects['mug']
+    object_cls = objects['mustard_bottle']
     path = 'mocap/' + object_cls.name + '/'
     # Saving path
     save_path = 'obj_coordinate/' + object_cls.name + '/'
@@ -29,7 +29,7 @@ if __name__ == "__main__":
         # If cutting is needed
         length = TF_oh.shape[0]
         cutted_start = int(0.2 * length)
-        cutted_end = int(0.6 * length)
+        cutted_end = int(0.7 * length)
         gpose = TF_oh[-1, :].reshape(1, 7)
         cutted_TF_oh = np.concatenate((TF_oh[cutted_start:cutted_end, :], gpose), axis=0)
         np.savetxt(save_path + file[:-3] + 'txt', cutted_TF_oh)

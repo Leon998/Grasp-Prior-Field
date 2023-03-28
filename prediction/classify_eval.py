@@ -10,13 +10,13 @@ import open3d as o3d
 
 
 if __name__ == "__main__":
-    object_cls = objects['cracker_box']
+    object_cls = objects['mug']
     path = 'classify/training_data/' + object_cls.name + '_field.txt'
     batch_size = 64
     # Get cpu or gpu device for training.
     device = "cuda"
 
-    train_set, validate_set, _, _ = data_loading(path, batch_size, object_cls)
+    train_set, validate_set, _, _ = data_loading(path, batch_size)
     num_example = 1
     X, Y = validate_set[:num_example][0], validate_set[:num_example][1]
     X, Y = X.to(device), Y.to(device)
@@ -51,7 +51,7 @@ if __name__ == "__main__":
         start_gpose = hand_transform(pose, init_hand)
         meshes.append(start_gpose)
     # for idx in Real:
-    #     pose = poses_avg[idx][:-1]
+    #     pose = poses[idx][:-1]
     #     real_gpose = hand_transform(pose, init_hand)
     #     real_gpose.paint_uniform_color([0 / 255, 255 / 255, 0 / 255])
     #     meshes.append(real_gpose)

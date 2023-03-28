@@ -23,11 +23,22 @@ if __name__ == "__main__":
     label = np.loadtxt(save_path + '/' + str(gtype)+'_label.txt')
     for i in range(gtype_poses.shape[0]):
         pose = gtype_poses[i]
-        hand_gtype = hand_transform(pose, init_hand)
-        hand_gtype.paint_uniform_color(colorlib[int(label[i])])
-        meshes.append(hand_gtype)
+        hand_gpose = hand_transform(pose, init_hand)
+        hand_gpose.paint_uniform_color(colorlib[int(label[i])])
+        meshes.append(hand_gpose)
         # if i >= 2:
         #     break
+
+    # AVG
+    # gposes_avg_path = save_path + '/' + 'gposes_label_avg.txt'
+    # gposes_label_avg = np.loadtxt(gposes_avg_path)
+    # gposes = gposes_label_avg[:, :-1]
+    # labels = gposes_label_avg[:, -1]
+    # for i, gpose in enumerate(gposes):
+    #     hand_gtype = hand_transform(gpose, init_hand)
+    #     color_idx = int(labels[i])
+    #     hand_gtype.paint_uniform_color(colorlib[color_idx])
+    #     meshes.append(hand_gtype)
 
     field_path = 'obj_coordinate/pcd_field/' + object_cls.name
     pcd = o3d.io.read_point_cloud(field_path + '/' + str(gtype) +'.xyzrgb')

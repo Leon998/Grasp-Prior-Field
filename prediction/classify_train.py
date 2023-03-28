@@ -10,11 +10,11 @@ object_cls = objects['mug']
 output_dim = object_cls.g_clusters * len(object_cls.grasp_types)
 
 MLP = torch.nn.Sequential(
-    torch.nn.Linear(7, 64),
+    torch.nn.Linear(7, 128),
     torch.nn.ReLU(),
-    torch.nn.Linear(64, 128),
+    torch.nn.Linear(128, 512),
     torch.nn.ReLU(),
-    torch.nn.Linear(128, output_dim)
+    torch.nn.Linear(512, output_dim)
 )
 
 
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     device = "cuda"
     print(f"Using {device} device")
 
-    _, _, train_dataloader, test_dataloader = data_loading(path, batch_size, object_cls)
+    _, _, train_dataloader, test_dataloader = data_loading(path, batch_size)
 
     for X, y in train_dataloader:
         print(f"Shape of X [N, C, H, W]: {X.shape}")

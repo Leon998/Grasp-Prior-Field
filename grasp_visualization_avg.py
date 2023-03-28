@@ -22,10 +22,10 @@ if __name__ == "__main__":
 
     gposes_label_avg = np.loadtxt(gposes_avg_path)
     gposes = gposes_label_avg[:, :-1]
-    labels = gposes_label_avg[:, -1:]
+    labels = gposes_label_avg[:, -1]
     for i, gpose in enumerate(gposes):
         hand_gtype = hand_transform(gpose, init_hand)
-        color_idx = int(labels[i][0])
+        color_idx = int(labels[i])
         hand_gtype.paint_uniform_color(colorlib[color_idx])
         meshes.append(hand_gtype)
 

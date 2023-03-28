@@ -54,6 +54,8 @@ colorlib = []
 for color in colors:
     color = np.array(color) / 255
     colorlib.append(color)
+# for i in range(500):
+#     colorlib.append(np.array([50, 50, 50]))
 
 objects = {}
 PATH = '/home/shixu/My_env/Grasp-Prior-Field/'
