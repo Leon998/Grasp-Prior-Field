@@ -1,5 +1,4 @@
 import numpy as np
-
 from hand_config import *
 from object_config import colorlib, objects
 from utils import *
@@ -9,7 +8,7 @@ import open3d as o3d
 if __name__ == "__main__":
     object_cls = objects['mug']
     save_path = 'obj_coordinate/pcd_gposes/' + object_cls.name
-    gposes_avg_path = save_path + '/' + 'gposes_label_avg.txt'
+    gposes_avg_path = save_path + '/' + 'gposes_label_avg_' + str(object_cls.g_clusters) + '.txt'
     field_path = 'obj_coordinate/pcd_field/' + object_cls.name
 
     # Coordinate
@@ -21,11 +20,10 @@ if __name__ == "__main__":
     meshes = [coordinate, object_mesh]
 
     gposes_label_avg = np.loadtxt(gposes_avg_path)
-    gposes = gposes_label_avg[:, :-1]
-    labels = gposes_label_avg[:, -1]
+    gposes = gposes_label_avg[:, :]
     for i, gpose in enumerate(gposes):
         hand_gtype = hand_transform(gpose, init_hand)
-        color_idx = int(labels[i])
+        color_idx = i
         hand_gtype.paint_uniform_color(colorlib[color_idx])
         meshes.append(hand_gtype)
 

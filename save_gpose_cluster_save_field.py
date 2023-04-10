@@ -32,7 +32,7 @@ def label_stack(label, num_frame):
 
 
 if __name__ == "__main__":
-    object_cls = objects['mustard_bottle']
+    object_cls = objects['mug']
     # ====================================== Save gposes gtypes ============================== #
     path = 'obj_coordinate/' + object_cls.name + '/'
     q_grasps_oh, t_grasps_oh, tf_grasps_oh, grasp_type_names = grasp_integrate(path, object_cls.grasp_types)

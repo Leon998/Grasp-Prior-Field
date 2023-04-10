@@ -54,8 +54,8 @@ colorlib = []
 for color in colors:
     color = np.array(color) / 255
     colorlib.append(color)
-# for i in range(500):
-#     colorlib.append(np.array([50, 50, 50]))
+for i in range(500):
+    colorlib.append(np.array([50, 50, 50]))
 
 objects = {}
 PATH = '/home/shixu/My_env/Grasp-Prior-Field/'
@@ -93,7 +93,7 @@ mustard_bottle = Object(name='mustard_bottle',
                         file_path=PATH + 'ycb_models/006_mustard_bottle/textured.obj',
                         init_pose=(-np.pi / 2, 0, -np.pi / 3),
                         grasp_types=['side1', 'side2', 'top'],
-                        g_clusters=4,
+                        g_clusters=9,
                         rotate_expansion=180)
 objects['mustard_bottle'] = mustard_bottle
 
@@ -154,7 +154,8 @@ objects['bowl'] = bowl
 mug = Object(name='mug',
              file_path=PATH + 'ycb_models/025_mug/textured.obj',
              init_pose=(-np.pi / 2, 0, 0),
-             grasp_types=['handle', 'side', 'top'])
+             grasp_types=['handle', 'side', 'top'],
+             g_clusters=9)
 objects['mug'] = mug
 
 power_drill = Object(name='power_drill',

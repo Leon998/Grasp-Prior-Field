@@ -7,10 +7,13 @@ from utils import *
 import numpy as np
 from object_config import objects
 import shutil
+from add_gauss_noise import add_pose_noise, add_gaussian_noise
+
+add_noise = False
 
 
 if __name__ == "__main__":
-    object_cls = objects['mustard_bottle']
+    object_cls = objects['mug']
     path = 'mocap/' + object_cls.name + '/'
     # Saving path
     save_path = 'obj_coordinate/' + object_cls.name + '/'
@@ -32,7 +35,11 @@ if __name__ == "__main__":
         cutted_end = int(0.7 * length)
         gpose = TF_oh[-1, :].reshape(1, 7)
         cutted_TF_oh = np.concatenate((TF_oh[cutted_start:cutted_end, :], gpose), axis=0)
-        np.savetxt(save_path + file[:-3] + 'txt', cutted_TF_oh)
+        if add_noise:
+            noisy_TF_oh = add_pose_noise(cutted_TF_oh, std_q=0.1, std_t=0.01)
+            np.savetxt(save_path + file[:-3] + 'txt', noisy_TF_oh)
+        else:
+            np.savetxt(save_path + file[:-3] + 'txt', cutted_TF_oh)
 
     # Rotate Expansion
     if object_cls.rotate_expansion == 180:

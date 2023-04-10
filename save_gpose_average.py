@@ -37,8 +37,8 @@ def save_gpose_avg(object_cls, dubug=False):
     # print(gposes_label_avg.shape)
     cls_idx = np.array(item).reshape(len(item), 1)
     # print(cls_idx)
-    gposes_avg = np.concatenate((gposes_avg, cls_idx), axis=1)
-    np.savetxt(save_path + '/' + 'gposes_label_avg.txt', gposes_avg)
+    # gposes_avg = np.concatenate((gposes_avg, cls_idx), axis=1)
+    np.savetxt(save_path + '/' + 'gposes_label_avg_' + str(object_cls.g_clusters) + '.txt', gposes_avg)
 
 
 def rotation_avg(gposes):

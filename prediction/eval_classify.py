@@ -7,22 +7,33 @@ from dataset_config import *
 from object_config import objects
 from hand_config import *
 import open3d as o3d
+from utils import *
+
+
+device = "cuda"
+object_cls = objects['mug']
+model = torch.load('classify/trained_models/' + object_cls.name + '_' + str(object_cls.g_clusters) +'.pkl')
+model.eval()
+
+# Coordinate
+coordinate = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.2, origin=[0, 0, 0])
+# Object
+object_mesh = object_cls.init_transform()
+# Hand
+init_hand = load_mano()
+meshes = [coordinate, object_mesh]
+
+poses_avg = np.loadtxt('../obj_coordinate/pcd_gposes/' + object_cls.name + '/gposes_label_avg.txt')
 
 
 if __name__ == "__main__":
-    object_cls = objects['mug']
     path = 'classify/training_data/' + object_cls.name + '_field.txt'
     batch_size = 64
     # Get cpu or gpu device for training.
-    device = "cuda"
-
     train_set, validate_set, _, _ = data_loading(path, batch_size)
     num_example = 1
     X, Y = validate_set[:num_example][0], validate_set[:num_example][1]
     X, Y = X.to(device), Y.to(device)
-
-    model = torch.load('classify/trained_models/' + object_cls.name + '.pkl')
-    model.eval()
     Pred = []
     with torch.no_grad():
         for x in X:
@@ -36,17 +47,6 @@ if __name__ == "__main__":
     print(Real, '\n', Pred)
 
     # Visualize
-    # Coordinate
-    coordinate = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.2, origin=[0, 0, 0])
-    # Object
-    object_mesh = object_cls.init_transform()
-    # Hand
-    init_hand = load_mano()
-    meshes = [coordinate, object_mesh]
-
-    poses_avg = np.loadtxt('../obj_coordinate/pcd_gposes/' + object_cls.name + '/gposes_label_avg.txt')
-
-
     for pose in Start_pose:
         start_gpose = hand_transform(pose, init_hand)
         meshes.append(start_gpose)
@@ -56,14 +56,14 @@ if __name__ == "__main__":
     #     real_gpose.paint_uniform_color([0 / 255, 255 / 255, 0 / 255])
     #     meshes.append(real_gpose)
     for i, idx in enumerate(Pred):
-        pose = poses_avg[idx][:-1]
+        pose = poses_avg[idx]
         pred_gpose = hand_transform(pose, init_hand)
         if idx == Real[0]:
             print("ass")
             pred_gpose.paint_uniform_color([0 / 255, 255 / 255, 0 / 255])
             meshes.append(pred_gpose)
         else:
-            pred_gpose.paint_uniform_color([0.4*i, 0.4*i, 0.4*i])
+            pred_gpose.paint_uniform_color([0.4 * i, 0.4 * i, 0.4 * i])
             meshes.append(pred_gpose)
 
     o3d.visualization.draw_geometries(meshes)

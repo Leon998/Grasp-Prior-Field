@@ -70,7 +70,7 @@ def coordinate_transform(q_wh, t_wh, q_wo, t_wo):
     """
     r_wo = R.from_quat(q_wo).as_matrix()  # Get object rotation matrix from quaternion
     r_wh = R.from_quat(q_wh).as_matrix()  # Get hand rotation matrix from quaternion
-    ## Transform
+    # Transform
     r_oh = (np.linalg.inv(r_wo)).dot(r_wh)
     # r_oh = (r_wh).dot(np.linalg.inv(r_wo))
     q_oh = R.from_matrix(r_oh).as_quat()
