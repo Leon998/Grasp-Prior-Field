@@ -52,6 +52,7 @@ if __name__ == "__main__":
     rotation = (np.pi / 2, 0, 0)
     R1 = new_hand.get_rotation_matrix_from_yzx(rotation)
     new_hand.rotate(R1, center=translation)
+    # new_hand.scale(0.5, center=new_hand.get_center())
     print(new_hand.get_center())
 
     o3d.visualization.draw_geometries([coordinate, init_hand_mesh, new_hand])
